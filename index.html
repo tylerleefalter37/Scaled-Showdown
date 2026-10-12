@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Scaled Showdowns V1.0</title>
+<title>Scaled Showdowns: Syndicate V2.0</title>
 <style>
   :root {
     --bg-base: #060a06;
@@ -124,7 +124,7 @@
 
 <header>
   <div class="header-top">
-    <div class="os-brand">SCALED SHOWDOWNS V1.0</div>
+    <div class="os-brand">SCALED SHOWDOWNS: SYNDICATE V2.0</div>
     <div style="display:flex; gap: 6px; align-items:center;">
       <button class="action-btn cyan-btn" style="padding:4px 8px; font-size:9px;" onclick="saveGame()">SAVE</button>
       <button class="action-btn cyan-btn" style="padding:4px 8px; font-size:9px;" onclick="loadGame()">LOAD</button>
@@ -133,17 +133,17 @@
   </div>
   <div class="hud-stats">
     <div class="hud-tag">CREDITS: <span id="hud-credits" style="color:var(--term-gold);">CR 0</span></div>
-    <div class="hud-tag">GLORY: <span id="hud-glory" style="color:var(--term-purple);">0</span></div>
+    <div class="hud-tag">REP: <span id="hud-glory" style="color:var(--term-purple);">0</span></div>
     <div class="hud-tag">ASCENSION: <span id="hud-ascension" style="color:var(--term-red);">0</span></div>
-    <div class="hud-tag">REPTILES: <span id="hud-count" style="color:#fff;">0</span>/2000</div>
-    <div class="hud-tag">ALPHA PACK: <span id="hud-alpha-count" style="color:var(--term-cyan);">0</span>/3</div>
+    <div class="hud-tag">ROOM: <span id="hud-count" style="color:#fff;">0</span>/1000</div>
+    <div class="hud-tag">PACK: <span id="hud-alpha-count" style="color:var(--term-cyan);">0</span>/3</div>
   </div>
 </header>
 
 <nav>
   <button class="nav-btn active" onclick="setTab('hangar')">Reptile Room</button>
   <button class="nav-btn" onclick="setTab('procure')">Import Hub</button>
-  <button class="nav-btn" onclick="setTab('arena')">Solo Showdown</button>
+  <button class="nav-btn" onclick="setTab('arena')">The Pit</button>
   <button class="nav-btn" onclick="setTab('campaign')">Alpha 3v3</button>
   <button class="nav-btn" onclick="setTab('auction')">Live Auction</button>
   <button class="nav-btn" onclick="setTab('exchange')">Market</button>
@@ -154,14 +154,14 @@
   <!-- TAB 1: REPTILE ROOM -->
   <div id="tab-hangar" class="view-tab active">
     <div class="panel">
-      <div class="panel-header">Active Solo Reptile Telemetry</div>
+      <div class="panel-header">Deployed Pit Fighter Telemetry</div>
       <div id="equipped-panel"></div>
     </div>
 
     <div class="panel">
       <div class="panel-header">
         <div class="panel-header-row">
-          <span>Terrarium Management</span>
+          <span>Vivarium Management</span>
           <div style="display:flex; gap:4px;">
             <button class="action-btn cyan-btn" style="padding:4px 6px; font-size:8px;" onclick="sortHangar('power')">Sort: PWR</button>
             <button class="action-btn cyan-btn" style="padding:4px 6px; font-size:8px;" onclick="sortHangar('tier')">Sort: TIER</button>
@@ -184,7 +184,7 @@
   <div id="tab-procure" class="view-tab">
     <div class="panel">
       <div class="panel-header">Global Smuggler / Breeder Imports</div>
-      <p style="font-size:10px; color:var(--text-dim); margin-bottom:12px;">Rolls yield 50/30/15/5% chance within the bracket's 4 ascending rarity tiers.</p>
+      <p style="font-size:10px; color:var(--text-dim); margin-bottom:12px;">Shipments yield 50/30/15/5% chance within the bracket's 4 ascending rarity tiers.</p>
       
       <div style="border:1px solid #14331c; padding:8px; margin-bottom:8px;">
         <div style="font-size:10px; color:var(--term-cyan); font-weight:bold; margin-bottom:6px;">BRACKET ALPHA [Tiers I - IV]</div>
@@ -202,12 +202,12 @@
         <div style="font-size:10px; color:var(--term-gold); font-weight:bold; margin-bottom:6px;">BRACKET OMEGA [Tiers VII - X]</div>
         <div style="display:flex; gap:6px;"><button class="action-btn gold-btn" style="flex:1;" onclick="fabricate(3, 1)">1x (CR 500K)</button><button class="action-btn gold-btn" style="flex:1;" onclick="fabricate(3, 3)">3x (CR 1.5M)</button></div>
       </div>
-      <div class="panel-header">10 Rarity Tiers Overview (2,000 Reptile Species)</div>
+      <div class="panel-header">10 Rarity Tiers Overview (1,000 Specific Morph Varieties)</div>
       <div id="tier-breakdown-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:4px; font-size:9px; text-align:center;"></div>
     </div>
   </div>
 
-  <!-- TAB 3: SOLO ARENA -->
+  <!-- TAB 3: THE PIT -->
   <div id="tab-arena" class="view-tab">
     <div class="panel">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
@@ -219,6 +219,7 @@
       <div class="vs-screen">
         <div>
           <div id="p-name" style="font-weight:bold; font-size:12px; color:var(--term-cyan);">NO DEPLOYED REPTILE</div>
+          <div style="color:var(--term-purple); font-size:9px; font-weight:bold;" id="p-asc-label"></div>
           <div class="hp-bar-bg" style="margin-top:4px;"><div id="p-hp" class="hp-bar-fill"></div></div>
           <div id="p-stats" style="font-size:9px; color:var(--text-dim); margin-top:4px;">PWR: 0 | HP: 0/0</div>
         </div>
@@ -233,7 +234,7 @@
         <button id="btn-battle" class="action-btn red-btn" style="padding:12px;" onclick="startBattle()">Initiate Pit Match (Fee: CR 2,000)</button>
         <button id="btn-retreat" class="action-btn" style="padding:8px;" disabled onclick="retreatBattle()">Forfeit Match</button>
       </div>
-      <div id="combat-log" class="combat-log" style="margin-top:10px;"><div style="color:var(--text-dim);">[SYSTEM] Underground Pit operational. Apex kills grant free genetically-boosted species.</div></div>
+      <div id="combat-log" class="combat-log" style="margin-top:10px;"><div style="color:var(--text-dim);">[SYSTEM] The Pit is operational. Defeating Apex beasts grants elite morphs.</div></div>
     </div>
   </div>
 
@@ -245,7 +246,7 @@
       
       <div id="campaign-setup" style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
         <button class="action-btn cyan-btn" onclick="startCampaignFight(0)">Exhibition [Tiers I - IV] (Fee: CR 10K)</button>
-        <button class="action-btn" onclick="startCampaignFight(1)">Exhibition [Tiers III - VI] (Fee: CR 50K)</button>
+        <button class="action-btn" style="color:var(--term-green); border-color:var(--term-green);" onclick="startCampaignFight(1)">Exhibition [Tiers III - VI] (Fee: CR 50K)</button>
         <button class="action-btn purple-btn" onclick="startCampaignFight(2)">Exhibition [Tiers V - VIII] (Fee: CR 250K)</button>
         <button class="action-btn gold-btn" onclick="startCampaignFight(3)">Exhibition [Tiers VII - X] (Fee: CR 1.0M)</button>
       </div>
@@ -283,7 +284,7 @@
       <p style="font-size:10px; color:var(--text-dim); margin-bottom:14px;">Fund field teams to explore wild habitats. Guarantees bulk supply commodities and a wild-caught, genetically exceptional specimen.</p>
       <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
         <button class="action-btn cyan-btn" style="padding:10px;" onclick="sendExpedition(0)">Local Reserves [T1-T4] (CR 10K)</button>
-        <button class="action-btn" style="padding:10px;" onclick="sendExpedition(1)">Deep Swamps [T3-T6] (CR 50K)</button>
+        <button class="action-btn" style="padding:10px; color:var(--term-green); border-color:var(--term-green);" onclick="sendExpedition(1)">Deep Swamps [T3-T6] (CR 50K)</button>
         <button class="action-btn purple-btn" style="padding:10px;" onclick="sendExpedition(2)">Remote Archipelagos [T5-T8] (CR 250K)</button>
         <button class="action-btn gold-btn" style="padding:10px;" onclick="sendExpedition(3)">Uncharted Jungles [T7-T10] (CR 1.0M)</button>
       </div>
@@ -295,10 +296,21 @@
 <div id="toast-rack"></div>
 
 <script>
-  /* ================= 2,000 PROCEDURAL REPTILE ROSTER ================= */
-  const REGIONS = ["Eastern","Western","Northern","Southern","African","Asian","American","Australian","Madagascan","Indian","Amazonian","Saharan","Gobi","Mojave","Everglades","Congo","Borneo","Galapagos","Sonoran","Andean"];
-  const ADJECTIVES = ["Green","Black","Red","Reticulated","Emerald","Spotted","Banded","Crested","Horned","Giant"];
-  const ANIMALS = ["Gecko","Skink","Monitor","Iguana","Chameleon","Boa","Python","Viper","Cobra","Tortoise"];
+  /* ================= REAL WORLD REPTILE MATRIX (1000 SPECIES) ================= */
+  const MORPHS = ["Wild Type", "Albino", "Melanistic", "Axanthic", "Piebald", "Leucistic", "Hypomelanistic", "Ghost", "Lavender", "Blue-Phase"];
+
+  const T1_SPECIES = ["Leopard Gecko", "Corn Snake", "Crested Gecko", "Ball Python", "Bearded Dragon", "Rosy Boa", "Gargoyle Gecko", "African Fat-Tailed Gecko", "Kenyan Sand Boa", "Milk Snake"];
+  const T2_SPECIES = ["Blue-Tongued Skink", "Carpet Python", "Russian Tortoise", "Green Anole", "Red-Eared Slider", "Garter Snake", "Mourning Gecko", "Day Gecko", "Fire Skink", "Hognose Snake"];
+  const T3_SPECIES = ["Boa Constrictor", "Green Iguana", "Argentine Tegu", "Uromastyx", "Chahoua Gecko", "Woma Python", "Blood Python", "Sulcata Tortoise", "Panther Chameleon", "Veiled Chameleon"];
+  const T4_SPECIES = ["Reticulated Python", "Green Anaconda", "Nile Monitor", "Asian Water Monitor", "Savannah Monitor", "Burmese Python", "Yellow Anaconda", "Black-Throated Monitor", "Crocodile Monitor", "Lace Monitor"];
+  const T5_SPECIES = ["Mangrove Snake", "False Water Cobra", "Emerald Tree Boa", "Green Tree Python", "Amazon Tree Boa", "Boelen's Python", "Dragon Snake", "Tentacled Snake", "Rhino Rat Snake", "Spiny Bush Viper"];
+  const T6_SPECIES = ["Western Diamondback", "Copperhead", "Cottonmouth", "Eastern Coral Snake", "Puff Adder", "Gaboon Viper", "Rhinoceros Viper", "Eyelash Viper", "Timber Rattlesnake", "Mojave Rattlesnake"];
+  const T7_SPECIES = ["King Cobra", "Black Mamba", "Green Mamba", "Coastal Taipan", "Tiger Snake", "Death Adder", "Boomslang", "Caspian Cobra", "Banded Sea Krait", "Yellow-bellied Sea Snake"];
+  const T8_SPECIES = ["Inland Taipan", "Blue Insularis", "Komodo Dragon", "Tuatara", "Galapagos Tortoise", "Aldabra Tortoise", "Gila Monster", "Mexican Beaded Lizard", "Marine Iguana", "Fiji Banded Iguana"];
+  const T9_SPECIES = ["Saltwater Crocodile", "Nile Crocodile", "American Alligator", "Black Caiman", "Gharial", "Leatherback Sea Turtle", "Loggerhead Turtle", "Alligator Snapping Turtle", "Mata Mata", "Chinese Alligator"];
+  const T10_SPECIES = ["Orinoco Crocodile", "Tomistoma", "Philippine Crocodile", "Cuban Crocodile", "Siamese Crocodile", "Green Sea Turtle", "Hawksbill Turtle", "Kemp's Ridley", "Galapagos Pink Iguana", "Dwarf Crocodile"];
+
+  const TIER_GROUPS = [T1_SPECIES, T2_SPECIES, T3_SPECIES, T4_SPECIES, T5_SPECIES, T6_SPECIES, T7_SPECIES, T8_SPECIES, T9_SPECIES, T10_SPECIES];
 
   const TIERS = [
     { tier: 1, name: "Tier I: Common Pet", color: "var(--t0-col)", mult: 1.0, minPower: 400 },
@@ -309,20 +321,19 @@
     { tier: 6, name: "Tier VI: CITES Appendix I", color: "var(--t5-col)", mult: 25.0, minPower: 55000 },
     { tier: 7, name: "Tier VII: Apex Predator", color: "var(--t6-col)", mult: 55.0, minPower: 130000 },
     { tier: 8, name: "Tier VIII: Jurassic Relic", color: "var(--t7-col)", mult: 120.0, minPower: 300000 },
-    { tier: 9, name: "Tier IX: Mythological Beast", color: "var(--t8-col)", mult: 260.0, minPower: 650000 },
-    { tier: 10, name: "Tier X: Apex Kaiju God", color: "var(--t9-col)", mult: 520.0, minPower: 1000000 }
+    { tier: 9, name: "Tier IX: Mythical Beast", color: "var(--t8-col)", mult: 260.0, minPower: 650000 },
+    { tier: 10, name: "Tier X: Syndicate Legend", color: "var(--t9-col)", mult: 520.0, minPower: 1000000 }
   ];
 
   let MASTER_CODEX = [];
   function buildCodex() {
     let id = 1;
-    for(let d=0; d<REGIONS.length; d++){
-      for(let p=0; p<ADJECTIVES.length; p++){
-        for(let c=0; c<ANIMALS.length; c++){
-          if(id > 2000) break;
-          let tIdx = Math.min(9, Math.floor((id - 1) / 200));
-          let tData = TIERS[tIdx];
-
+    for(let tIdx=0; tIdx<10; tIdx++){
+      let tData = TIERS[tIdx];
+      let speciesList = TIER_GROUPS[tIdx];
+      
+      for(let s=0; s<speciesList.length; s++){
+        for(let m=0; m<MORPHS.length; m++){
           let baseVal = Math.floor(250 + (id * 2.5));
           let hp = Math.floor((baseVal * 1.5) * tData.mult);
           let atk = Math.floor((baseVal * 0.45) * tData.mult);
@@ -337,15 +348,13 @@
           }
 
           MASTER_CODEX.push({
-            id: id, code: `REP-${String(id).padStart(4,'0')}`, name: `${REGIONS[d]} ${ADJECTIVES[p]} ${ANIMALS[c]}`,
+            id: id, code: `REP-${String(id).padStart(4,'0')}`, name: `${MORPHS[m]} ${speciesList[s]}`,
             tierIndex: tIdx, tierName: tData.name, tierColor: tData.color,
             baseHp: hp, baseAtk: atk, baseDef: def, baseSpd: spd, hp: hp, atk: atk, def: def, spd: spd, power: power, value: Math.floor(power * 1.8)
           });
           id++;
         }
-        if(id > 2000) break;
       }
-      if(id > 2000) break;
     }
   }
   buildCodex();
@@ -388,11 +397,11 @@
   function godMode() { State.credits += 1000000000; State.glory += 50000; toast("OVERRIDE: +1 BILLION Credits"); updateHUD(); renderHangar(); }
 
   function saveGame() {
-    localStorage.setItem('scShowdownsV1', JSON.stringify(State));
+    localStorage.setItem('scShowdownsV2', JSON.stringify(State));
     toast("State saved to local memory.");
   }
   function loadGame() {
-    let saved = localStorage.getItem('scShowdownsV1');
+    let saved = localStorage.getItem('scShowdownsV2');
     if(saved) {
       State = JSON.parse(saved);
       if(!State.lockedUids) State.lockedUids = [];
@@ -409,7 +418,7 @@
   /* ================= ASCENSION ================= */
   function ascend() {
     State.ascension++; State.arenaWins = 0; State.campaignStage = 1; State.glory += 5000;
-    toast(`ASCENDED TO LEVEL ${State.ascension}! Enemies scale higher, reward boosts +5% permanently.`);
+    toast(`ASCENDED TO PRESTIGE ${State.ascension}! Enemies scale higher, reward boosts +5% permanently.`);
     updateHUD();
   }
 
@@ -431,7 +440,7 @@
     renderEquippedTelemetry();
   }
 
-  /* ================= FABRICATOR (IMPORT HUB) ================= */
+  /* ================= FABRICATOR ================= */
   function fabricate(bIdx, count) {
     let costs = [5000, 25000, 100000, 500000];
     let cost = costs[bIdx] * count;
@@ -483,7 +492,7 @@
     toast(`Imported: <span style="color:${instance.tierColor}">[T${instance.tierIndex+1}] ${instance.name}</span>`);
   }
 
-  /* ================= REPTILE ROOM (HANGAR) ================= */
+  /* ================= HANGAR ================= */
   function sortHangar(mode) { State.sortMode = mode; renderHangar(); }
   function toggleAlpha(uid) {
     let idx = State.alphaTeamUids.indexOf(uid);
@@ -500,7 +509,7 @@
 
   function renderHangar() {
     const grid = document.getElementById('hangar-grid'); grid.innerHTML = '';
-    if(State.hangar.length === 0) { grid.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-dim); font-size:11px;">Reptile room is empty. Import species.</div>`; renderEquippedTelemetry(); return; }
+    if(State.hangar.length === 0) { grid.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-dim); font-size:11px;">Room is empty. Procure reptiles.</div>`; renderEquippedTelemetry(); return; }
 
     let sorted = [...State.hangar];
     if(State.sortMode === 'power') sorted.sort((a,b) => b.power - a.power);
@@ -535,24 +544,21 @@
     renderEquippedTelemetry();
   }
 
-  function equipSuit(uid) { State.equippedId = uid; renderHangar(); toast("Solo exhibition beast deployed."); }
+  function equipSuit(uid) { State.equippedId = uid; renderHangar(); toast("Solo Vanguard deployed."); }
   function sellSuit(uid, e) {
     if(State.lockedUids.includes(uid)) return;
     let idx = State.hangar.findIndex(s => s.uid === uid);
     if(idx > -1) { 
       if(e) { let card = e.target.closest('.suit-card'); if(card) card.remove(); }
       let sellVal = Math.floor(State.hangar[idx].value * 0.80); 
-      State.credits += sellVal; 
-      State.hangar.splice(idx, 1); 
-      toast(`Sold for CR ${fmt(sellVal)}.`); 
-      updateHUD(); 
-      renderHangar(); 
+      State.credits += sellVal; State.hangar.splice(idx, 1); 
+      toast(`Sold for CR ${fmt(sellVal)}.`); updateHUD(); renderHangar(); 
     }
   }
 
   function quickSell(maxTier) {
     let toSell = State.hangar.filter(s => s.tierIndex <= maxTier && s.uid !== State.equippedId && !State.alphaTeamUids.includes(s.uid) && !State.lockedUids.includes(s.uid));
-    if(toSell.length === 0) { toast("No valid unlocked units available to sell."); return; }
+    if(toSell.length === 0) { toast("No valid unlocked units available."); return; }
     let total = 0; toSell.forEach(s => total += Math.floor(s.value * 0.80));
     State.hangar = State.hangar.filter(s => s.tierIndex > maxTier || s.uid === State.equippedId || State.alphaTeamUids.includes(s.uid) || State.lockedUids.includes(s.uid));
     State.credits += total; toast(`Liquidated ${toSell.length} reptiles for +CR ${fmt(total)}.`); updateHUD(); renderHangar();
@@ -627,6 +633,7 @@
     State.credits -= 2000; updateHUD();
     let isBoss = ((State.arenaWins + 1) % 5 === 0);
 
+    // Solo scaling: Enemies scale ONLY on round count and ascension, completely ignoring player's power
     let eScale = 1.0 + (State.arenaWins * 0.15) + (State.ascension * 0.5);
     if(isBoss) eScale *= 2.0;
 
@@ -868,7 +875,7 @@
     let suit = State.hangar[sIdx]; State.hangar.splice(sIdx, 1);
 
     State.auctions.push({ suit: suit, baseVal: suit.value, timer: 150, currentBid: Math.floor(suit.value * 0.33), log: [] });
-    updateHUD(); renderHangar(); startAuctionLoop(); renderAuctions(); toast("Specimen listed for Live Auction.");
+    updateHUD(); startAuctionLoop(); renderAuctions(); toast("Listed for Live Auction.");
   }
 
   function fillAuctions() {
